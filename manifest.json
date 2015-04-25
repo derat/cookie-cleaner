@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Cookie Cleaner",
+  "version": "1",
+  "permissions": [
+    "<all_urls>",
+    "cookies",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  }
+}
