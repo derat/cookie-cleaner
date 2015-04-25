@@ -1,9 +1,17 @@
 function $(id) { return document.getElementById(id); }
 
 function save_options() {
-  chrome.storage.sync.set({
-    exceptions: $('exceptions-textarea').value
-  }, function(items) {
+  var lines = $('exceptions-textarea').value.split("\n");
+  var domains = [];
+  for (var i = 0; i < lines.length; i++) {
+    var domain = lines[i].trim();
+    if (domain)
+      domains.push(domain);
+  }
+  var value = domains.sort().join("\n");
+
+  chrome.storage.sync.set({ exceptions: value }, function(items) {
+    $('exceptions-textarea').value = value;
     $('save-button').disabled = true;
   });
 }
@@ -23,3 +31,4 @@ document.addEventListener('DOMContentLoaded', restore_options);
 $('save-button').addEventListener('click', save_options);
 $('exceptions-textarea').addEventListener('change', textarea_changed);
 $('exceptions-textarea').addEventListener('keyup', textarea_changed);
+$('exceptions-textarea').addEventListener('paste', textarea_changed);
