@@ -1,3 +1,7 @@
+// Copyright 2019 Daniel Erat. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // From http://stackoverflow.com/questions/280634/endswith-in-javascript
 String.prototype.endsWith = function(suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
