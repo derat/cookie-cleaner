@@ -41,6 +41,8 @@ function clear_cookies() {
     });
 
     // TODO: Local storage?
+    // See https://developer.chrome.com/extensions/browsingData
+    // RemovalOptions has excludeOrigins since Chrome 74.
   });
 }
 
