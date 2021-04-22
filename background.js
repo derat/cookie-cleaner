@@ -3,44 +3,40 @@
 // found in the LICENSE file.
 
 // From http://stackoverflow.com/questions/280634/endswith-in-javascript
-String.prototype.endsWith = function(suffix) {
+String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 function clear_cookies() {
   // Hope I get to try promises someday.
-  chrome.storage.sync.get('exceptions', function(items) {
-    if (!items.exceptions)
-      return;
+  chrome.storage.sync.get("exceptions", function (items) {
+    if (!items.exceptions) return;
     var domains = items.exceptions.split("\n");
-    if (!domains.length)
-      return;
+    if (!domains.length) return;
 
-    chrome.cookies.getAll({}, function(cookies) {
+    chrome.cookies.getAll({}, function (cookies) {
       for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
         var keepCookie = false;
 
         for (var j = 0; j < domains.length; j++) {
           var domain = domains[j];
-          if (cookie.domain == domain || cookie.domain.endsWith('.' + domain)) {
+          if (cookie.domain == domain || cookie.domain.endsWith("." + domain)) {
             keepCookie = true;
             break;
           }
         }
 
-        if (keepCookie)
-          continue;
+        if (keepCookie) continue;
 
         var prefix = cookie.secure ? "https://" : "http://";
-        var domain = cookie.domain.substring(cookie.domain[0] == '.' ? 1 : 0);
+        var domain = cookie.domain.substring(cookie.domain[0] == "." ? 1 : 0);
         var url = prefix + domain + cookie.path;
-        console.log('deleting ' + cookie.name + ' for ' + url);
+        console.log("deleting " + cookie.name + " for " + url);
         chrome.cookies.remove({
           url: url,
-          name: cookie.name
+          name: cookie.name,
         });
-
       }
     });
 
