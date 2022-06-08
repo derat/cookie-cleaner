@@ -9,7 +9,7 @@
   },
   "background": {
     "persistent": false,
-    "scripts": ["background.js"]
+    "scripts": ["common.js", "background.js"]
   },
   "icons": {
     "48": "icon-48.png",

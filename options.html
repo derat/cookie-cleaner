@@ -4,23 +4,31 @@
     <title>Cookie Cleaner Options</title>
     <style>
       #exceptions-label {
-        padding-bottom: 4px;
-      }
-      #exceptions-textarea {
-        width: 300px;
-        height: 400px;
         display: block;
         margin-bottom: 4px;
       }
+      #exceptions-textarea {
+        display: block;
+        /* Chrome seems to now consistently screw up options_ui sizing,
+         * so the dialog always ends up with a vertical scrollbar. I'm
+         * guessing it's not accounting for the header that it puts in
+         * the dialog with the extension's icon and name. */
+        width: 300px;
+        height: 400px;
+        margin-bottom: 8px;
+      }
+      #save-button {
+        margin-right: 8px;
+      }
     </style>
+    <script src="common.js"></script>
+    <script src="options.js"></script>
   </head>
 
   <body>
-    <div id="exceptions-label">
-      <label for="exceptions-textarea">Exceptions:</label>
-    </div>
-    <textarea id="exceptions-textarea" placeholder="One domain per line"> </textarea>
-    <button id="save-button" onclick="save_options()">Save</button>
-    <script src="options.js"></script>
+    <label id="exceptions-label" for="exceptions-textarea">Exceptions:</label>
+    <textarea id="exceptions-textarea" placeholder="One domain per line"></textarea>
+    <button id="save-button">Save</button>
+    <button id="clear-button">Clear cookies</button>
   </body>
 </html>

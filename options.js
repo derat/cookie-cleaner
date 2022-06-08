@@ -2,38 +2,41 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-function $(id) {
-  return document.getElementById(id);
-}
+const $ = (id) => document.getElementById(id);
 
-function save_options() {
-  var lines = $("exceptions-textarea").value.split("\n");
-  var domains = [];
-  for (var i = 0; i < lines.length; i++) {
-    var domain = lines[i].trim();
-    if (domain) domains.push(domain);
-  }
-  var value = domains.sort().join("\n");
-
-  chrome.storage.sync.set({ exceptions: value }, function (items) {
-    $("exceptions-textarea").value = value;
-    $("save-button").disabled = true;
+function saveOptions() {
+  const exceptions = $('exceptions-textarea')
+    .value.trim()
+    .split('\n')
+    .map((d) => d.trim())
+    .filter(Boolean)
+    .sort()
+    .join('\n');
+  chrome.storage.sync.set({ exceptions }, () => {
+    $('exceptions-textarea').value = exceptions;
+    $('save-button').disabled = true;
   });
 }
 
-function restore_options() {
-  chrome.storage.sync.get("exceptions", function (items) {
-    $("exceptions-textarea").value = items.exceptions ? items.exceptions : "";
-    $("save-button").disabled = true;
+function restoreOptions() {
+  chrome.storage.sync.get('exceptions', (items) => {
+    $('exceptions-textarea').value = items.exceptions ?? '';
+    $('save-button').disabled = true;
   });
 }
 
-function textarea_changed() {
-  $("save-button").disabled = false;
+function textareaChanged() {
+  $('save-button').disabled = false;
 }
 
-document.addEventListener("DOMContentLoaded", restore_options);
-$("save-button").addEventListener("click", save_options);
-$("exceptions-textarea").addEventListener("change", textarea_changed);
-$("exceptions-textarea").addEventListener("keyup", textarea_changed);
-$("exceptions-textarea").addEventListener("paste", textarea_changed);
+document.addEventListener('DOMContentLoaded', () => {
+  $('save-button').addEventListener('click', saveOptions);
+  $('clear-button').addEventListener('click', () => {
+    saveOptions();
+    clearCookies();
+  });
+  $('exceptions-textarea').addEventListener('change', textareaChanged);
+  $('exceptions-textarea').addEventListener('keyup', textareaChanged);
+  $('exceptions-textarea').addEventListener('paste', textareaChanged);
+  restoreOptions();
+});
