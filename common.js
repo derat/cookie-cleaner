@@ -2,30 +2,30 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// Deletes all cookies except those explicitly excluded by the user.
-function clearCookies() {
+// Deletes all data except that explicitly excluded by the user.
+function clearData() {
   chrome.storage.sync.get('exceptions', function (items) {
-    if (!items.exceptions) return;
-    const domains = items.exceptions.split('\n');
-    if (!domains.length) return;
+    const excludeOrigins = (items.exceptions ?? '')
+      .split('\n')
+      .map((d) => d.trim())
+      .filter(Boolean)
+      .map((d) => [`http://${d}`, `https://${d}`])
+      .flat();
+    if (!excludeOrigins.length) return;
 
-    chrome.cookies.getAll({}, (cookies) => {
-      for (const cookie of cookies) {
-        const keep = domains.find(
-          (d) => cookie.domain === d || cookie.domain.endsWith(`.${d}`)
-        );
-        if (keep) continue;
-
-        const prefix = cookie.secure ? 'https://' : 'http://';
-        const domain = cookie.domain.replace(/^\./, '');
-        const url = prefix + domain + cookie.path;
-        console.log(`Deleting "${cookie.name}" for ${url}`);
-        chrome.cookies.remove({ url, name: cookie.name });
-      }
-    });
-
-    // TODO: Also clear local storage?
-    // See https://developer.chrome.com/extensions/browsingData
-    // RemovalOptions has excludeOrigins since Chrome 74.
+    console.log('Clearing data');
+    chrome.browsingData.remove(
+      { excludeOrigins },
+      {
+        cacheStorage: true,
+        cookies: true,
+        fileSystems: true,
+        indexedDB: true,
+        localStorage: true,
+        serviceWorkers: true,
+        webSQL: true,
+      },
+      () => console.log('Cleared data')
+    );
   });
 }

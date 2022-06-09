@@ -1,8 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Cookie Cleaner",
-  "version": "2",
-  "permissions": ["<all_urls>", "cookies", "storage"],
+  "version": "3",
+  "description": "Clear cookies and other site data",
+  "permissions": ["browsingData", "storage"],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('save-button').addEventListener('click', saveOptions);
   $('clear-button').addEventListener('click', () => {
     saveOptions();
-    clearCookies();
+    clearData();
   });
   $('exceptions-textarea').addEventListener('change', textareaChanged);
   $('exceptions-textarea').addEventListener('keyup', textareaChanged);
