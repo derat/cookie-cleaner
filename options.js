@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import { clearData } from './common.js';
+
 const $ = (id) => document.getElementById(id);
 
 function saveOptions() {
@@ -31,10 +33,18 @@ function textareaChanged() {
 
 document.addEventListener('DOMContentLoaded', () => {
   $('save-button').addEventListener('click', saveOptions);
-  $('clear-button').addEventListener('click', () => {
+
+  const clearButton = $('clear-button');
+  clearButton.addEventListener('click', () => {
+    clearButton.innerText = 'Clearing...';
+    clearButton.disabled = true;
     saveOptions();
-    clearData();
+    clearData().finally(() => {
+      clearButton.innerText = 'Clear data';
+      clearButton.disabled = false;
+    });
   });
+
   $('exceptions-textarea').addEventListener('change', textareaChanged);
   $('exceptions-textarea').addEventListener('keyup', textareaChanged);
   $('exceptions-textarea').addEventListener('paste', textareaChanged);

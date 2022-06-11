@@ -1,16 +1,16 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Cookie Cleaner",
-  "version": "3",
+  "version": "4",
   "description": "Clear cookies and other site data",
   "permissions": ["browsingData", "storage"],
   "options_ui": {
     "page": "options.html",
-    "chrome_style": true
+    "open_in_tab": true
   },
   "background": {
-    "persistent": false,
-    "scripts": ["common.js", "background.js"]
+    "service_worker": "background.js",
+    "type": "module"
   },
   "icons": {
     "48": "icon-48.png",
